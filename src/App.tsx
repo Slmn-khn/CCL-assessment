@@ -1,25 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Box, Container, Typography } from '@mui/material';
 
-function App() {
+import UserList from './components/UsersTable/UserList';
+import UserDetail from './components/UserDetails';
+import ErrorBoundary from './components/ErrorBoundary';
+
+import { headerFooterText } from './const'
+
+const App: React.FC = () => {
+  const HeaderFooterView = () => (
+    <Box component="header" textAlign="center" bgcolor="primary.main" p={2}>
+      <Typography variant="h5" color="white">
+        {headerFooterText}
+      </Typography>
+    </Box>
+  )
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Box display="flex" flexDirection="column" minHeight="100vh">
+        <HeaderFooterView />
+        <Container component="main" sx={{ flex: 1, py: 3 }}>
+          <ErrorBoundary>
+            <Routes>
+              <Route path="/" element={<UserList />} />
+              <Route path="/users/:id" element={<UserDetail />} />
+            </Routes>
+          </ErrorBoundary>
+        </Container>
+        <HeaderFooterView />
+      </Box>
+    </Router>
   );
 }
 
